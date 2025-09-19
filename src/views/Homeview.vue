@@ -51,33 +51,35 @@
 
 
       <div class="tutorial-wrapper" v-if="showDownloadDialog">
-
-  <div class="tutorial-scroll" ref="tutorialContainer" @scroll="handleTutorialScroll">
+  <div
+    class="tutorial-scroll"
+    ref="tutorialContainer"
+    @scroll="handleTutorialScroll"
+  >
     <div
       v-for="(screen, i) in screens"
       :key="i"
       class="tutorial-screen"
     >
       <img :src="screen.bg" alt="screen" class="tutorial-image" />
-      <img
-        :src="screen.highlight"
-        class="highlight-circle"
-        :style="screen.highlightStyle"
-      />
-      <div class="instruction-box">
-        <span>{{ screen.text }}</span>
+
+      <!-- Highlight Wrapper -->
+      <div class="highlight-wrapper" :style="screen.highlightStyle">
+        <img :src="screen.highlight" class="highlight-circle" />
+
+        <div class="counter-circle">
+          <img :src="circle" alt="circle" class="circle-img" />
+          <span class="counter-text">{{ i + 1 }} / {{ screens.length }}</span>
+        </div>
+
+        <span class="instruction-box">{{ screen.text }}</span>
       </div>
     </div>
   </div>
 
-
-  <div class="step-indicator">
-    <span>{{ currentStep + 1 }} / {{ screens.length }}</span>
-  </div>
-
- 
   <v-btn class="skip-btn" @click="finishTutorial">跳过</v-btn>
 </div>
+
 
 <!-- 
       <v-dialog
@@ -161,7 +163,8 @@
   import dscreen3 from '../assets/ios-3.png';
   import dscreen4 from '../assets/ios-4.png';
   import dscreen5 from '../assets/ios-5.png';
-  
+  import circle from '../assets/circle.png'
+  import close from '../assets/close.png'
   import highlightcircle from '../assets/messages_banner.png'
 
 
@@ -209,32 +212,37 @@ function handleTutorialScroll() {
 const screens = [
   {
     bg: dscreen1,
+    // counter:circle,
     highlight: highlightcircle,
-    highlightStyle: { top: "65%", left: "50%" },
+    highlightStyle: { top: "10%", left: "10%" },
     text: "点击安装应用"
   },
   {
     bg: dscreen2,
+    // counter:circle,
     highlight:highlightcircle,
-    highlightStyle: { top: "40%", left: "30%" },
+    highlightStyle: { top: "10%", left: "10%" },
     text: "返回设置选择【通用】"
   },
   {
     bg: dscreen3,
+    // counter:circle,
     highlight:highlightcircle,
-    highlightStyle: { top: "50%", left: "40%" },
+    highlightStyle: { top: "10%", left: "10%" },
     text: "点击【VPN与设备管理】"
   },
   {
     bg: dscreen4,
+    // counter:circle,
     highlight:highlightcircle,
-    highlightStyle: { top: "50%", left: "40%" },
+    highlightStyle: {top: "10%", left: "10%" },
     text: "点击【VPN与设备管理】"
   },
   {
     bg: dscreen5,
+    // counter:circle,
     highlight:highlightcircle,
-    highlightStyle: { top: "50%", left: "40%" },
+    highlightStyle: { top: "10%", left: "10%" },
     text: "点击【VPN与设备管理】"
   },
 ];
@@ -338,7 +346,7 @@ function finishTutorial() {
   currentStep.value = 0;
   showDownloadDialog.value = false;
 
-  alert("Tutorial Finished!");
+  // alert("Tutorial Finish");
 }
 
 function handleDownloadClick() {
@@ -362,8 +370,8 @@ function handleDownloadClick() {
 
 .tutorial-screen {
   width: 100%;
-  height: 100vh;             /* full screen per step */
-  scroll-snap-align: start;  /* snap at each step */
+  height: 100vh;             
+  scroll-snap-align: start; 
   position: relative;
 }
 
@@ -396,7 +404,7 @@ function handleDownloadClick() {
   position: absolute;
   top: 10%;
   left: 20px;
-  background: red;
+  /* background: red; */
   color: #fff;
   padding: 6px 14px;
   border-radius: 20px;
@@ -404,47 +412,59 @@ function handleDownloadClick() {
 }
 
 /* Highlight */
-.highlight-circle {
+.highlight-wrapper {
   position: absolute;
-  width: 150px;
-  height: 150px;
   pointer-events: none;
+}
+
+/* highlight */
+.highlight-circle {
+  width: 300px;
+  pointer-events: none;
+  display: block;
+}
+
+/* Circle near highlight */
+.counter-circle {
+  position: absolute;
+  top: 10%; 
+  /* left: 100%;   */
+  transform: translateX(10px); /* spacing */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.circle-img {
+  width: 60px;
+  height: 60px;
+}
+
+.counter-text {
+  position: absolute;
+  font-size: 14px;
+  font-weight: bold;
+  color: white;
 }
 
 /* Instruction box */
 .instruction-box {
   position: absolute;
-  bottom: 120px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: red;
+  top:14%;
+  left:25%;
+  /* text-align: center; */
+  /* bottom: 120px; */
+  /* left: 50%; */
+  /* transform: translateX(-50%); */
+  /* background: red; */
   color: #fff;
   padding: 12px 18px;
   border-radius: 25px;
   font-size: 14px;
 }
 
-/* Nav buttons */
-.nav-buttons {
-  position: absolute;
-  bottom: 40px;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  gap: 12px;
-}
 
-.nav-btn {
-  background: #fff;
-  font-weight: bold;
-  border-radius: 20px;
-  min-width: 80px;
-}
-
-.finish-btn {
-  background: green;
-  color: white;
-}
 
 .skip-btn {
   position: absolute;
