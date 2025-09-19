@@ -63,7 +63,7 @@
     >
       <img :src="screen.bg" alt="screen" class="tutorial-image" />
 
-      <!-- Highlight Wrapper -->
+      
       <div class="highlight-wrapper" :style="screen.highlightStyle">
         <img :src="screen.highlight" class="highlight-circle" />
 
@@ -399,7 +399,6 @@ function handleDownloadClick() {
   object-fit: cover;
 }
 
-/* Step indicator */
 .step-indicator {
   position: absolute;
   top: 10%;
@@ -411,25 +410,24 @@ function handleDownloadClick() {
   font-weight: bold;
 }
 
-/* Highlight */
+
 .highlight-wrapper {
   position: absolute;
   pointer-events: none;
 }
 
-/* highlight */
+
 .highlight-circle {
   width: 300px;
   pointer-events: none;
   display: block;
 }
 
-/* Circle near highlight */
 .counter-circle {
   position: absolute;
   top: 10%; 
   /* left: 100%;   */
-  transform: translateX(10px); /* spacing */
+  transform: translateX(10px); 
   display: flex;
   align-items: center;
   justify-content: center;
@@ -448,7 +446,7 @@ function handleDownloadClick() {
   color: white;
 }
 
-/* Instruction box */
+
 .instruction-box {
   position: absolute;
   top:25%;
