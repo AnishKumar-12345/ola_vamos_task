@@ -451,7 +451,7 @@ function handleDownloadClick() {
 /* Instruction box */
 .instruction-box {
   position: absolute;
-  top:14%;
+  top:25%;
   left:25%;
   /* text-align: center; */
   /* bottom: 120px; */
