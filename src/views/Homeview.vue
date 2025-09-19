@@ -10,6 +10,7 @@
           backgroundRepeat: 'no-repeat',
         }"
       >
+      <div  :class="['content-wrapper', { 'blur-background': showDownloadDialog }]">
       <div
   class="content-wrapper"
   ref="scrollContainer"
@@ -42,9 +43,104 @@
   
        
         <div class="sticky-btn-container">
-          <v-btn class="download-btn"  dark>立即下载</v-btn>
+            <v-btn class="download-btn" dark @click="handleDownloadClick">立即下载</v-btn>
+
         </div>
+    </div>
       </v-sheet>
+
+
+      <div class="tutorial-wrapper" v-if="showDownloadDialog">
+
+  <div class="tutorial-scroll" ref="tutorialContainer" @scroll="handleTutorialScroll">
+    <div
+      v-for="(screen, i) in screens"
+      :key="i"
+      class="tutorial-screen"
+    >
+      <img :src="screen.bg" alt="screen" class="tutorial-image" />
+      <img
+        :src="screen.highlight"
+        class="highlight-circle"
+        :style="screen.highlightStyle"
+      />
+      <div class="instruction-box">
+        <span>{{ screen.text }}</span>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="step-indicator">
+    <span>{{ currentStep + 1 }} / {{ screens.length }}</span>
+  </div>
+
+ 
+  <v-btn class="skip-btn" @click="finishTutorial">跳过</v-btn>
+</div>
+
+<!-- 
+      <v-dialog
+  v-model="showDownloadDialog"
+  persistent
+  width="320"
+  transition="dialog-transition"
+>
+  <v-card
+    class="pa-5"
+    elevation="0"
+    style="
+      border-radius: 60px;
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(25px);
+      -webkit-backdrop-filter: blur(25px);
+      text-align: center;
+    "
+  >
+   
+    <v-btn
+      icon
+      size="small"
+      class="ma-0 pa-0"
+      style="position: absolute; top: 10px; right: 10px; color: white; background-color: transparent;"
+      @click="showDownloadDialog = false"
+    >
+      <v-icon size="20">mdi-close</v-icon>
+    </v-btn>
+
+  
+    <v-img
+      :src="logoImg"
+      contain
+      width="40"
+      height="40"
+      class="mb-3 mx-auto"
+    ></v-img>
+
+ 
+    <div class="text-white text-subtitle-1 font-weight-bold mb-2">
+      下载提醒
+    </div>
+
+
+    <div
+      class="text-white text-body-2 mb-5"
+      style="line-height: 1.6; font-size: 14px;"
+    >
+      请正常下载安装包进行安装，若是华为鸿蒙系统手机请关闭纯净系统进行下载。
+    </div>
+
+ 
+    <v-btn
+      variant="text"
+      style="color: white; font-weight: bold;"
+      @click="showDownloadDialog = false"
+    >
+      确定
+    </v-btn>
+  </v-card>
+</v-dialog> -->
+
     </v-app>
   </template>
   
@@ -60,11 +156,20 @@
   import screen5 from '../assets/screen 5.png';
   import screen6 from '../assets/screen 6.png';
   import screen7 from '../assets/screen 7.png';
+  import dscreen1 from '../assets/ios-1.png';
+  import dscreen2 from '../assets/ios-2.png';
+  import dscreen3 from '../assets/ios-3.png';
+  import dscreen4 from '../assets/ios-4.png';
+  import dscreen5 from '../assets/ios-5.png';
+  
+  import highlightcircle from '../assets/messages_banner.png'
+
 
   
   const currentIndex = ref(0);
   const scrollContainer = ref(null);
-  
+
+let scrollTimeout = null; 
   const slides = [
     { image: screen1, title: '小鱼扑克 真人视频竞技', subtitle: '创新玩法 乐趣翻倍' },
     { image: screen2, title: '小鱼扑克 真人视频竞技', subtitle: '安全卫士巡航 护卫你的牌桌' },
@@ -74,6 +179,65 @@
     { image: screen6, title: '小鱼扑克 真人视频竞技', subtitle: '好友组局 私密安全' },
     { image: screen7, title: '小鱼扑克 真人视频竞技', subtitle: '好友组局 私密安全' },
   ];
+
+  const tutorialContainer = ref(null);
+
+function handleTutorialScroll() {
+  const container = tutorialContainer.value;
+  if (!container) return;
+
+  const scrollTop = container.scrollTop;
+  const containerHeight = container.clientHeight;
+
+  let activeIndex = 0;
+  let minDiff = Infinity;
+
+  screens.forEach((_, i) => {
+    const slide = container.children[i];
+    const slideTop = slide.offsetTop;
+    const diff = Math.abs(slideTop - scrollTop);
+    if (diff < minDiff) {
+      minDiff = diff;
+      activeIndex = i;
+    }
+  });
+
+  currentStep.value = activeIndex;
+}
+  const currentStep = ref(0);
+
+const screens = [
+  {
+    bg: dscreen1,
+    highlight: highlightcircle,
+    highlightStyle: { top: "65%", left: "50%" },
+    text: "点击安装应用"
+  },
+  {
+    bg: dscreen2,
+    highlight:highlightcircle,
+    highlightStyle: { top: "40%", left: "30%" },
+    text: "返回设置选择【通用】"
+  },
+  {
+    bg: dscreen3,
+    highlight:highlightcircle,
+    highlightStyle: { top: "50%", left: "40%" },
+    text: "点击【VPN与设备管理】"
+  },
+  {
+    bg: dscreen4,
+    highlight:highlightcircle,
+    highlightStyle: { top: "50%", left: "40%" },
+    text: "点击【VPN与设备管理】"
+  },
+  {
+    bg: dscreen5,
+    highlight:highlightcircle,
+    highlightStyle: { top: "50%", left: "40%" },
+    text: "点击【VPN与设备管理】"
+  },
+];
 
 
 let autoScrollInterval = null;
@@ -158,9 +322,142 @@ function onUserScroll() {
     startAutoScroll(); 
   }, 3000);
 }
+
+const showDownloadDialog = ref(false);
+
+
+function nextStep() {
+  if (currentStep.value < screens.length - 1) currentStep.value++;
+}
+
+function prevStep() {
+  if (currentStep.value > 0) currentStep.value--;
+}
+
+function finishTutorial() {
+  currentStep.value = 0;
+  showDownloadDialog.value = false;
+
+  alert("Tutorial Finished!");
+}
+
+function handleDownloadClick() {
+
+//   const isAndroid = /android/i.test(navigator.userAgent);
+//   if (isAndroid) {
+    showDownloadDialog.value = true;
+//   } else {
+   
+//   }
+}
   </script>
   
   <style scoped>
+  .tutorial-scroll {
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
+  scroll-snap-type: y mandatory;
+}
+
+.tutorial-screen {
+  width: 100%;
+  height: 100vh;             /* full screen per step */
+  scroll-snap-align: start;  /* snap at each step */
+  position: relative;
+}
+
+
+ .tutorial-wrapper {
+  position: fixed;   
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: black;
+  overflow: hidden;
+  z-index: 9999;      
+}
+
+
+.tutorial-bg {
+  width: 100%;
+  height: 100%;
+}
+
+.tutorial-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Step indicator */
+.step-indicator {
+  position: absolute;
+  top: 10%;
+  left: 20px;
+  background: red;
+  color: #fff;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-weight: bold;
+}
+
+/* Highlight */
+.highlight-circle {
+  position: absolute;
+  width: 150px;
+  height: 150px;
+  pointer-events: none;
+}
+
+/* Instruction box */
+.instruction-box {
+  position: absolute;
+  bottom: 120px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: red;
+  color: #fff;
+  padding: 12px 18px;
+  border-radius: 25px;
+  font-size: 14px;
+}
+
+/* Nav buttons */
+.nav-buttons {
+  position: absolute;
+  bottom: 40px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+}
+
+.nav-btn {
+  background: #fff;
+  font-weight: bold;
+  border-radius: 20px;
+  min-width: 80px;
+}
+
+.finish-btn {
+  background: green;
+  color: white;
+}
+
+.skip-btn {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  color: white;
+  background: transparent;
+}
+  .blur-background {
+  filter: blur(10px);
+  transition: filter 0.3s ease;
+  pointer-events: none; /* Optional: prevents interaction behind dialog */
+}
   .fill-height {
     height: 100vh;
     width: 100vw;
