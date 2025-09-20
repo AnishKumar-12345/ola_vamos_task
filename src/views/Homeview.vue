@@ -50,7 +50,7 @@
       </v-sheet>
 
 
-      <div class="tutorial-wrapper" v-if="showDownloadDialog">
+      <div class="tutorial-wrapper" v-if="showDownloadDialog && isIOS">
   <div
     class="tutorial-scroll"
     ref="tutorialContainer"
@@ -63,10 +63,28 @@
     >
       <img :src="screen.bg" alt="screen" class="tutorial-image" />
 
-      
+
+<div class="tutorial-top-buttons">
+  <div v-if="currentStep > 0" class="previous-btn" @click="prevStep">
+    <img :src="previous" alt="Previous" class="previous-img" />
+    <span class="previous-label">上一步</span>
+  </div>
+
+
+  <div v-else class="button-placeholder"></div>
+
+  <div class="skip-btn" @click="finishTutorial">
+    <div class="close-wrapper">
+      <img :src="close" alt="close" class="close-img" />
+      <span class="close-txt">跳过</span>
+    </div>
+  </div>
+</div>
+
+
       <div class="highlight-wrapper" :style="screen.highlightStyle">
         <img :src="screen.highlight" class="highlight-circle" />
-
+       
         <div class="counter-circle">
           <img :src="circle" alt="circle" class="circle-img" />
           <span class="counter-text">{{ i + 1 }} / {{ screens.length }}</span>
@@ -77,11 +95,13 @@
     </div>
   </div>
 
-  <v-btn class="skip-btn" @click="finishTutorial">跳过</v-btn>
+  <div class="tutorial-bottom-button" @click="handleTutorialButtonClick">
+  {{ currentStep === screens.length - 1 ? '完成' : '下一步' }}
+</div>
 </div>
 
 
-<!-- 
+
       <v-dialog
   v-model="showDownloadDialog"
   persistent
@@ -91,13 +111,15 @@
   <v-card
     class="pa-5"
     elevation="0"
-    style="
-      border-radius: 60px;
-      background: rgba(255, 255, 255, 0.05);
-      backdrop-filter: blur(25px);
-      -webkit-backdrop-filter: blur(25px);
-      text-align: center;
-    "
+    :style="{
+    borderRadius: '60px',
+    backgroundImage: `url(${popup_bg})`,
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    backdropFilter: 'blur(25px)',
+    WebkitBackdropFilter: 'blur(25px)',
+    textAlign: 'center'
+  }"
   >
    
     <v-btn
@@ -141,14 +163,14 @@
       确定
     </v-btn>
   </v-card>
-</v-dialog> -->
+</v-dialog>
 
     </v-app>
   </template>
   
   
   <script setup>
-  import { ref, onMounted, onBeforeUnmount } from 'vue';
+  import { ref, onMounted, onBeforeUnmount, computed, nextTick  } from 'vue';
   import backgroundImage from '../assets/background.png';
   import logoImg from '../assets/logo.png';
   import screen1 from '../assets/screen 1.png';
@@ -163,8 +185,10 @@
   import dscreen3 from '../assets/ios-3.png';
   import dscreen4 from '../assets/ios-4.png';
   import dscreen5 from '../assets/ios-5.png';
-  import circle from '../assets/circle.png'
-  import close from '../assets/close.png'
+  import circle from '../assets/circle.png';
+  import close from '../assets/close.png';
+  import previous from '../assets/previous.png';
+  import popup_bg from '../assets/popup_bg.png'
   import highlightcircle from '../assets/messages_banner.png'
 
 
@@ -214,38 +238,40 @@ const screens = [
     bg: dscreen1,
     // counter:circle,
     highlight: highlightcircle,
-    highlightStyle: { top: "10%", left: "10%" },
+    highlightStyle: { top: "20%", left: "10%" },
     text: "点击安装应用"
   },
   {
     bg: dscreen2,
     // counter:circle,
     highlight:highlightcircle,
-    highlightStyle: { top: "10%", left: "10%" },
+    highlightStyle: { top: "18%", left: "10%" },
     text: "返回设置选择【通用】"
   },
   {
     bg: dscreen3,
     // counter:circle,
     highlight:highlightcircle,
-    highlightStyle: { top: "10%", left: "10%" },
+    highlightStyle: { top: "20%", left: "10%" },
     text: "点击【VPN与设备管理】"
   },
   {
     bg: dscreen4,
     // counter:circle,
     highlight:highlightcircle,
-    highlightStyle: {top: "10%", left: "10%" },
+    highlightStyle: {top: "20%", left: "10%" },
     text: "点击【VPN与设备管理】"
   },
   {
     bg: dscreen5,
     // counter:circle,
     highlight:highlightcircle,
-    highlightStyle: { top: "10%", left: "10%" },
+    highlightStyle: { top: "20%", left: "10%" },
     text: "点击【VPN与设备管理】"
   },
 ];
+const isIOS = computed(() => /iphone|ipad|ipod/i.test(navigator.userAgent));
+
 
 
 let autoScrollInterval = null;
@@ -339,8 +365,23 @@ function nextStep() {
 }
 
 function prevStep() {
-  if (currentStep.value > 0) currentStep.value--;
+  if (currentStep.value > 0) {
+    currentStep.value--;
+    scrollToTutorialStep(currentStep.value);
+  }
 }
+
+function scrollToTutorialStep(index) {
+  const container = tutorialContainer.value;
+  const slide = container.children[index];
+  if (slide) {
+    container.scrollTo({
+      top: slide.offsetTop,
+      behavior: 'smooth',
+    });
+  }
+}
+
 
 function finishTutorial() {
   currentStep.value = 0;
@@ -349,15 +390,32 @@ function finishTutorial() {
   // alert("Tutorial Finish");
 }
 
-function handleDownloadClick() {
-
-//   const isAndroid = /android/i.test(navigator.userAgent);
-//   if (isAndroid) {
-    showDownloadDialog.value = true;
-//   } else {
-   
-//   }
+function handleTutorialButtonClick() {
+  if (currentStep.value === screens.length - 1) {
+    finishTutorial();
+  } else {
+    currentStep.value++;
+    scrollToTutorialStep(currentStep.value);
+  }
 }
+
+function handleDownloadClick() {
+  const isAndroid = /android/i.test(navigator.userAgent);
+  const isIOSDevice = /iphone|ipad|ipod/i.test(navigator.userAgent);
+
+  if (isAndroid) {
+    showDownloadDialog.value = true;
+  } else if (isIOSDevice) {
+    currentStep.value = 0;
+    showDownloadDialog.value = true;
+    nextTick(() => {
+      scrollToTutorialStep(0);
+    });
+  } else {
+    showDownloadDialog.value = true;
+  }
+}
+
   </script>
   
   <style scoped>
@@ -433,12 +491,39 @@ function handleDownloadClick() {
   justify-content: center;
   pointer-events: none;
 }
+/* .skip-btn{
+  position: absolute;
+  margin-top: -50%;
+  left: 65%;
+  pointer-events: auto;
+  cursor: pointer;
+
+} */
 
 .circle-img {
   width: 60px;
   height: 60px;
 }
+.close-wrapper {
+  position: relative;
+  display: inline-block;
+}
 
+.close-img {
+  width: 80px;
+  height: 35px;
+  display: block;
+}
+
+.close-txt {
+  position: absolute;
+  top: 50%;
+  left: 40%;
+  transform: translate(-50%, -50%); 
+  color: white;                     
+  font-size: 14px;
+  font-weight: bold;
+}
 .counter-text {
   position: absolute;
   font-size: 14px;
@@ -464,13 +549,13 @@ function handleDownloadClick() {
 
 
 
-.skip-btn {
+/* .skip-btn {
   position: absolute;
   top: 15px;
   right: 15px;
   color: white;
   background: transparent;
-}
+} */
   .blur-background {
   filter: blur(10px);
   transition: filter 0.3s ease;
@@ -579,6 +664,102 @@ function handleDownloadClick() {
     height: 50px;
     background-color: #d8d8d8;
   }
+  /* .previous-btn {
+  position: absolute;
+  margin-top: 20%;
+  left: 5%;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  z-index: 1000;
+}
+
+.previous-img {
+  width: 80px;
+  height: 35px;
+  margin-right: 6px;
+} */
+
+/* .previous-label {
+  position: absolute;
+  top: 50%;
+  left: 55%;
+  transform: translate(-50%, -50%); 
+  color: white;                     
+  font-size: 10px;
+  font-weight: bold;
+} */
+.tutorial-bottom-button {
+  position: absolute;
+  bottom: 40px;
+  left: 50%;
+  width: 300px;
+  transform: translateX(-50%);
+  background-color: white;
+  color: black;
+  font-weight: bold;
+  border-radius: 25px;
+  padding: 10px 30px;
+  font-size: 16px;
+  cursor: pointer;
+  z-index: 1000;
+  text-align: center;
+}
+
+.tutorial-top-buttons {
+  position: absolute;
+  top: 8%;
+  left: 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 24px;
+  z-index: 1000;
+  pointer-events: auto;
+}
+
+.button-placeholder {
+  width: 100px;
+  height: 1px;
+}
+
+.previous-btn {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  position: relative;
+  z-index: 1000;
+}
+
+.previous-img {
+  width: 80px;
+  height: 35px;
+  display: block;
+  position: relative;
+}
+.previous-label {
+  position: absolute;
+  top: 50%;
+  left: 60%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-size: 14px; 
+  font-weight: bold;
+  white-space: nowrap;     
+  overflow: hidden;
+  text-overflow: ellipsis;  
+  width: 100%;            
+  text-align: center;      
+  pointer-events: none;      
+}
+
+.skip-btn {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  z-index: 1000;
+}
+
   </style>
   
   
