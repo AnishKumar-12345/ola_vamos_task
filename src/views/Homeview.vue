@@ -621,29 +621,13 @@ function handleDownloadClick() {
   }
   
   .header {
-    /* border: 1px solid red; */
-    margin-top: -20%;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    flex-wrap: wrap; 
-    justify-content: center;
-    max-width: 90vw;
-    width: 100%;
-    box-sizing: border-box;
-  }
 
-  @media (min-width: 900px) {
-    .header {
-    
-      max-width: 600px;
-      margin-left: auto;
-      margin-right: auto;
-      border-radius: 16px;
-      /* background: rgba(0,0,0,0.2); */
-      padding: 24px 0;
-    }
-  }
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap; 
+  justify-content: center;
+}
 
   
   .dots-navigation {
@@ -798,6 +782,38 @@ function handleDownloadClick() {
   padding: 0 !important;
   height: 100vh;
 }
+
+/* Remove default inline spacing from images */
+.tutorial-image,
+.content-image {
+  display: block;
+  margin: 0;
+  padding: 0;
+  line-height: 0;
+}
+
+/* Ensure each screen uses full viewport without gaps */
+.tutorial-screen,
+.content-card {
+  margin: 0 !important;
+  padding: 0 !important;
+  height: 100vh;
+  box-sizing: border-box;
+}
+
+/* Remove extra margins on text in mobile */
+@media (max-width: 768px) {
+  .headline {
+    margin-top: 0 !important;
+  }
+  .sub {
+    margin-bottom: 0 !important;
+  }
+  .header {
+    margin: 0 !important;
+  }
+}
+
   </style>
   
   
