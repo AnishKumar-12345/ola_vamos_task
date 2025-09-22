@@ -426,12 +426,12 @@ function handleDownloadClick() {
   scroll-snap-type: y mandatory;
 }
 
-/* .tutorial-screen {
+.tutorial-screen {
   width: 100%;
   height: 100vh;             
   scroll-snap-align: start; 
   position: relative;
-} */
+}
 
 
  .tutorial-wrapper {
@@ -803,7 +803,7 @@ function handleDownloadClick() {
 .content-card,
 .tutorial-screen {
   width: 100%;       
-  max-width: 400px;      
+  max-width: 500px;      
   margin: 0 auto;        
   height: 100vh;
   scroll-snap-align: start;
