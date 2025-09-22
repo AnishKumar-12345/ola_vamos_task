@@ -288,9 +288,10 @@ function handleScroll() {
 
   slides.forEach((_, i) => {
     const slide = container.children[i];
-    const slideCenter = slide.offsetTop + slide.clientHeight / 2;
-    const diff = Math.abs(slideCenter - (scrollTop + containerHeight / 2));
+    const slideTop = slide.offsetTop;
+    const slideCenter = slideTop - scrollTop - containerHeight / 2;
 
+    const diff = Math.abs(slideCenter);
     if (diff < minDiff) {
       minDiff = diff;
       activeIndex = i;
@@ -299,7 +300,6 @@ function handleScroll() {
 
   currentIndex.value = activeIndex;
 }
-
 
 function scrollToSlide(index) {
   const container = scrollContainer.value;
@@ -428,13 +428,9 @@ function handleDownloadClick() {
 
 .tutorial-screen {
   width: 100%;
-  height: auto;      
-  min-height: auto;          
+  height: 100vh;             
   scroll-snap-align: start; 
   position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
 }
 
 
@@ -457,9 +453,8 @@ function handleDownloadClick() {
 
 .tutorial-image {
   width: 100%;
-  height: auto;      
+  height: 100%;
   object-fit: cover;
-  max-height: none;     
 }
 
 .step-indicator {
@@ -574,40 +569,46 @@ function handleDownloadClick() {
   }
   
   .content-wrapper {
-    height: 100vh; 
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
-  }
-  
-  .content-card {
-  min-height: auto;     
-  height: auto;
+  height: 100vh;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  scroll-snap-type: y mandatory;
+}
+.content-card {
+  height: 100vh;
+  scroll-snap-align: start;
+  flex-shrink: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-start;
-  padding: 24px;
+  justify-content: center;
+  padding: 0;
+  margin: 0;
   box-sizing: border-box;
-  }
+}
+
   
   .logo {
     width: 200px;
-    margin-bottom: 30px;
+    margin-bottom: 10px;
   }
   
   .headline {
-    font-size: 20px;
-    font-weight: bold;
-    color: white;
-    margin-top: 10px;
-    text-align: center;
-  }
-  
+  font-size: 20px;
+  font-weight: bold;
+  color: white;
+  margin-top: 10px;
+  text-align: center;
+  white-space: normal;
+  word-break: break-word;
+  max-width: 150px; 
+  line-height: 1.3;
+}
   .sub {
     font-size: 20px;
     font-weight: bold;
     color: white;
-    margin-bottom: 30px;
+    margin-bottom: 10px;
     text-align: center;
   }
   
@@ -618,8 +619,13 @@ function handleDownloadClick() {
   }
   
   .header {
-    display: flex;
-  }
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap; 
+  justify-content: center;
+}
+
   
   .dots-navigation {
   position: fixed;
@@ -690,7 +696,7 @@ function handleDownloadClick() {
   position: absolute;
   top: 50%;
   left: 55%;
-  transform: translate(-50%, -50%); 
+  transform: translate(-50%, -50%);  
   color: white;                     
   font-size: 10px;
   font-weight: bold;
