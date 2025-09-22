@@ -288,10 +288,9 @@ function handleScroll() {
 
   slides.forEach((_, i) => {
     const slide = container.children[i];
-    const slideTop = slide.offsetTop;
-    const slideCenter = slideTop - scrollTop - containerHeight / 2;
+    const slideCenter = slide.offsetTop + slide.clientHeight / 2;
+    const diff = Math.abs(slideCenter - (scrollTop + containerHeight / 2));
 
-    const diff = Math.abs(slideCenter);
     if (diff < minDiff) {
       minDiff = diff;
       activeIndex = i;
@@ -300,6 +299,7 @@ function handleScroll() {
 
   currentIndex.value = activeIndex;
 }
+
 
 function scrollToSlide(index) {
   const container = scrollContainer.value;
@@ -592,7 +592,7 @@ function handleDownloadClick() {
   
   .logo {
     width: 200px;
-    margin-bottom: 10px;
+    margin-bottom: 30px;
   }
   
   .headline {
@@ -607,7 +607,7 @@ function handleDownloadClick() {
     font-size: 20px;
     font-weight: bold;
     color: white;
-    margin-bottom: 10px;
+    margin-bottom: 30px;
     text-align: center;
   }
   
