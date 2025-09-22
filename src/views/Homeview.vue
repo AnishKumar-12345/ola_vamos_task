@@ -592,7 +592,7 @@ function handleDownloadClick() {
   
   .logo {
     width: 200px;
-    margin-bottom: 10px;
+    /* margin-bottom: 10px; */
   }
   
   .headline {
@@ -621,12 +621,29 @@ function handleDownloadClick() {
   }
   
   .header {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  flex-wrap: wrap; 
-  justify-content: center;
-}
+    /* border: 1px solid red; */
+    margin-top: -20%;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap; 
+    justify-content: center;
+    max-width: 90vw;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  @media (min-width: 900px) {
+    .header {
+    
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+      border-radius: 16px;
+      /* background: rgba(0,0,0,0.2); */
+      padding: 24px 0;
+    }
+  }
 
   
   .dots-navigation {
