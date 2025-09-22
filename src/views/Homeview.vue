@@ -451,11 +451,11 @@ function handleDownloadClick() {
   height: 100%;
 }
 
-.tutorial-image {
+/* .tutorial-image {
   width: 100%;
   height: 100%;
   object-fit: cover;
-}
+} */
 
 .step-indicator {
   position: absolute;
@@ -614,11 +614,11 @@ function handleDownloadClick() {
     text-align: center;
   }
   
-  .content-image {
+  /* .content-image {
     width: 100%;
     max-width: 400px;
     object-fit: contain;
-  }
+  } */
   
   .header {
 
@@ -783,35 +783,40 @@ function handleDownloadClick() {
   height: 100vh;
 }
 
-/* Remove default inline spacing from images */
+.content-wrapper,
+.tutorial-scroll {
+  height: 100vh;
+  overflow-y: auto;
+  scroll-snap-type: y mandatory;
+  margin: 0;
+  padding: 0;
+}
+
+.tutorial-wrapper,
+.v-application,
+.v-sheet {
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  width: 100vw;
+}
+.content-card,
+.tutorial-screen {
+  height: 100vh;
+  scroll-snap-align: start;
+  margin: 0 !important;
+  padding: 0 !important;
+  box-sizing: border-box;
+}
 .tutorial-image,
 .content-image {
   display: block;
   margin: 0;
   padding: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Or contain depending on your design */
   line-height: 0;
-}
-
-/* Ensure each screen uses full viewport without gaps */
-.tutorial-screen,
-.content-card {
-  margin: 0 !important;
-  padding: 0 !important;
-  height: 100vh;
-  box-sizing: border-box;
-}
-
-/* Remove extra margins on text in mobile */
-@media (max-width: 768px) {
-  .headline {
-    margin-top: 0 !important;
-  }
-  .sub {
-    margin-bottom: 0 !important;
-  }
-  .header {
-    margin: 0 !important;
-  }
 }
 
   </style>
