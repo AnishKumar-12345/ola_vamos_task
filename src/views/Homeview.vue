@@ -424,13 +424,17 @@ function handleDownloadClick() {
   height: 100%;
   overflow-y: auto;
   scroll-snap-type: y mandatory;
+  scroll-behavior: smooth; 
 }
 
 .tutorial-screen {
   width: 100%;
-  height: 100vh;             
+  height: auto;             
   scroll-snap-align: start; 
   position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 
