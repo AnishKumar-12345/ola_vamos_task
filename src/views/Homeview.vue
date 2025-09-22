@@ -426,12 +426,12 @@ function handleDownloadClick() {
   scroll-snap-type: y mandatory;
 }
 
-.tutorial-screen {
+/* .tutorial-screen {
   width: 100%;
   height: 100vh;             
   scroll-snap-align: start; 
   position: relative;
-}
+} */
 
 
  .tutorial-wrapper {
@@ -807,6 +807,7 @@ function handleDownloadClick() {
   margin: 0 !important;
   padding: 0 !important;
   box-sizing: border-box;
+  position: relative;
 }
 .tutorial-image,
 .content-image {
