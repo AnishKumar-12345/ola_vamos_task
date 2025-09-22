@@ -802,22 +802,24 @@ function handleDownloadClick() {
 }
 .content-card,
 .tutorial-screen {
+  width: 100%;       
+  max-width: 400px;      
+  margin: 0 auto;        
   height: 100vh;
   scroll-snap-align: start;
-  margin: 0 !important;
-  padding: 0 !important;
   box-sizing: border-box;
+  padding: 0 16px;     
 }
+
 .tutorial-image,
 .content-image {
+  width: 100%;    
+  height: auto;      
+  object-fit: contain; 
   display: block;
-  margin: 0;
-  padding: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover; /* Or contain depending on your design */
-  line-height: 0;
+  margin: 0 auto;    
 }
+
 
   </style>
   
