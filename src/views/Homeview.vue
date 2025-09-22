@@ -590,12 +590,12 @@ function handleDownloadClick() {
 
   
   .logo {
-    width: 200px;
+    width: 220px;
     margin-bottom: 10px;
   }
   
   .headline {
-  font-size: 20px;
+  font-size: 25px;
   font-weight: bold;
   color: white;
   margin-top: 10px;
