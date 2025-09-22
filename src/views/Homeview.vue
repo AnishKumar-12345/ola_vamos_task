@@ -573,7 +573,10 @@ function handleDownloadClick() {
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
   scroll-snap-type: y mandatory;
+  margin: 0;      
+  padding: 0;      
 }
+
 .content-card {
   height: 100vh;
   scroll-snap-align: start;
@@ -582,10 +585,10 @@ function handleDownloadClick() {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-
+  margin: 0;     
+  padding: 0;     
   box-sizing: border-box;
 }
-
   
   .logo {
     width: 200px;
@@ -771,6 +774,13 @@ function handleDownloadClick() {
   z-index: 1000;
 }
 
+.v-application,
+.v-application--wrap,
+.v-sheet {
+  margin: 0 !important;
+  padding: 0 !important;
+  height: 100vh;
+}
   </style>
   
   
