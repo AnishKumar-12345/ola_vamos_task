@@ -559,7 +559,7 @@ function handleDownloadClick() {
   .blur-background {
   filter: blur(10px);
   transition: filter 0.3s ease;
-  pointer-events: none; 
+  pointer-events: none; /* Optional: prevents interaction behind dialog */
 }
   .fill-height {
     height: 100vh;
@@ -569,7 +569,6 @@ function handleDownloadClick() {
   }
   
   .content-wrapper {
-
   height: 100vh;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
@@ -583,8 +582,7 @@ function handleDownloadClick() {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 0;
-  margin: 0;
+
   box-sizing: border-box;
 }
 
@@ -600,7 +598,7 @@ function handleDownloadClick() {
   color: white;
   margin-top: 10px;
   text-align: center;
-  white-space: normal;
+  white-space: normal; 
   word-break: break-word;
   max-width: 150px; 
   line-height: 1.3;
@@ -622,7 +620,7 @@ function handleDownloadClick() {
   .header {
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 8px;
   flex-wrap: wrap; 
   justify-content: center;
 }
@@ -697,7 +695,7 @@ function handleDownloadClick() {
   position: absolute;
   top: 50%;
   left: 55%;
-  transform: translate(-50%, -50%);  
+  transform: translate(-50%, -50%); 
   color: white;                     
   font-size: 10px;
   font-weight: bold;
