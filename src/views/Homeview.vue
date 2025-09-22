@@ -569,6 +569,7 @@ function handleDownloadClick() {
   }
   
   .content-wrapper {
+
   height: 100vh;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
@@ -621,7 +622,7 @@ function handleDownloadClick() {
   .header {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 4px;
   flex-wrap: wrap; 
   justify-content: center;
 }
