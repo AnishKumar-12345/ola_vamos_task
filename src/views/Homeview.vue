@@ -419,17 +419,18 @@ function handleDownloadClick() {
   </script>
   
   <style scoped>
-  .tutorial-scroll {
+
+.tutorial-scroll {
   width: 100%;
   height: 100%;
   overflow-y: auto;
   scroll-snap-type: y mandatory;
-  scroll-behavior: smooth; 
 }
 
 .tutorial-screen {
   width: 100%;
-  height: auto;             
+  height: auto;      
+  min-height: auto;          
   scroll-snap-align: start; 
   position: relative;
   display: flex;
@@ -457,8 +458,9 @@ function handleDownloadClick() {
 
 .tutorial-image {
   width: 100%;
-  height: 100%;
+  height: auto;      
   object-fit: cover;
+  max-height: none;     
 }
 
 .step-indicator {
@@ -472,12 +474,10 @@ function handleDownloadClick() {
   font-weight: bold;
 }
 
-
 .highlight-wrapper {
   position: absolute;
   pointer-events: none;
 }
-
 
 .highlight-circle {
   width: 300px;
@@ -495,6 +495,7 @@ function handleDownloadClick() {
   justify-content: center;
   pointer-events: none;
 }
+
 /* .skip-btn{
   position: absolute;
   margin-top: -50%;
@@ -508,6 +509,7 @@ function handleDownloadClick() {
   width: 60px;
   height: 60px;
 }
+
 .close-wrapper {
   position: relative;
   display: inline-block;
@@ -528,13 +530,13 @@ function handleDownloadClick() {
   font-size: 14px;
   font-weight: bold;
 }
+
 .counter-text {
   position: absolute;
   font-size: 14px;
   font-weight: bold;
   color: white;
 }
-
 
 .instruction-box {
   position: absolute;
@@ -551,20 +553,20 @@ function handleDownloadClick() {
   font-size: 14px;
 }
 
-
-
-/* .skip-btn {
+/*.skip-btn {
   position: absolute;
   top: 15px;
   right: 15px;
   color: white;
   background: transparent;
-} */
+}*/
+
   .blur-background {
   filter: blur(10px);
   transition: filter 0.3s ease;
-  pointer-events: none; /* Optional: prevents interaction behind dialog */
-}
+  pointer-events: none; 
+ }
+
   .fill-height {
     height: 100vh;
     width: 100vw;
@@ -573,20 +575,22 @@ function handleDownloadClick() {
   }
   
   .content-wrapper {
-    height: 100vh; 
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
+    height: 100vh;
+  overflow-y: scroll;
+  scroll-snap-type: y mandatory;
+    /* -webkit-overflow-scrolling: touch; */
   }
-  
+
   .content-card {
-    min-height: 100vh; 
+    min-height: auto;     
+    height: 100vh;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
     padding: 24px;
     box-sizing: border-box;
-  }
+   }
   
   .logo {
     width: 200px;
